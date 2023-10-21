@@ -109,7 +109,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Ladder"))
         {
+            _animator.SetBool("isLadder", true);
             movementInputDirection.y = Input.GetAxisRaw("Vertical") * 3;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            _animator.SetBool("isLadder", false);
         }
     }
 

@@ -6,10 +6,13 @@ using UnityEngineInternal;
 
 public class Health : MonoBehaviour
 {
+
+    [SerializeField] private Animator animator;
     public Gauge<float> health;
     public float maxHealth = 100f;
     [SerializeField, Range(0f,10f)] float recover = 0.01f;
     private SpriteRenderer[] meshs;
+
 
     public bool isDead = false;
     public bool isDmg = false;
@@ -56,6 +59,13 @@ public class Health : MonoBehaviour
         isDmg = true;
         health.Value -= dmg;
 
+        if (animator)
+        {
+            if (this.gameObject.CompareTag("Player"))
+            {
+                animator.CrossFade("Ani_Character_Hit", 0.2f);
+            }
+        }
         foreach (SpriteRenderer mesh in meshs)
             mesh.material.color = Color.red;
 

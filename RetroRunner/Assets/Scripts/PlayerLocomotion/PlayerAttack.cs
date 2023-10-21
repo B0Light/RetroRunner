@@ -10,6 +10,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private GameObject playerCharacter;
     [SerializeField] private bool isAttack;
     [SerializeField] private Stamina stamina;
+    [SerializeField] private Animator animator;
 
     [Header("attack Info")] 
     [SerializeField] private AttackData attackData;
@@ -25,6 +26,7 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         stamina = GetComponent<Stamina>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -40,18 +42,22 @@ public class PlayerAttack : MonoBehaviour
             {
                 isAttack = true;
                 Debug.Log("attack");
+                animator.CrossFade("Ani_Character_Skill", 0.2f);
                 StartCoroutine("ATKBase",attackData);
                 stamina.UseStamina(attackData.costMana);
-                
+                StartCoroutine(AttackCounter());
+
             }
             else if (Input.GetKeyDown(skillAttackKey) && stamina.stamina.Value >= skillData.costMana)
             {
                 isAttack = true;
                 Debug.Log("skill");
+                animator.CrossFade("Ani_Character_Skill", 0.2f);
                 StartCoroutine("ATKBase",skillData);
                 stamina.UseStamina(skillData.costMana);
+                StartCoroutine(AttackCounter());
             }
-            StartCoroutine(AttackCounter());
+            
         }
     }
     

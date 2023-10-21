@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Plane
   - Ladder
+  - Potal
+  - Goal
+  - Cube
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -16,7 +20,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Puzzle_Cube
   - Enemy
   - 
   - 
