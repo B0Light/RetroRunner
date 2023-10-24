@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: BaseAtk
   m_EditorClassIdentifier: 
   attackPower: 10
+  costMana: 1
   attackCoolTime: 1
-  meleeRadius: 0.5
+  meleeRadius: 2
   meleeRange: 1
   impactVfx: {fileID: 1011157772751556, guid: 51d87a83db5314742a9e266eb7bedab1, type: 3}
   abilityKey: 99

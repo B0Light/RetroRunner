@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SkillData
   m_EditorClassIdentifier: 
   attackPower: 30
+  costMana: 1
   attackCoolTime: 1
-  meleeRadius: 1
-  meleeRange: 1
+  meleeRadius: 2
+  meleeRange: 2
   impactVfx: {fileID: 2456107915846068600, guid: 2ffc4afc256a0402f9e9b75b98d77075, type: 3}
   abilityKey: 97

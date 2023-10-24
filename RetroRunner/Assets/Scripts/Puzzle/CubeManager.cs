@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CubeManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CubeManager : MonoBehaviour
     [SerializeField]
     private GameObject[] key;
     public bool[] checkList;
+
+    public UnityEvent ClearCube;
+
 
     private void Start()
     {
@@ -48,7 +52,13 @@ public class CubeManager : MonoBehaviour
         }
         if (i >= goal.Length)
         {
-            Debug.Log("Clear");
+            ClearPuzzle();
         }
+    }
+
+    private void ClearPuzzle()
+    {
+        Debug.Log("Clear");
+        ClearCube.Invoke();
     }
 }

@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    [SerializeField] private Health health;
     [SerializeField] private BoxCollider attackBox;
     [SerializeField] private float atkPower;
     
     private void OnTriggerEnter(Collider other)
     {
+        if(health.isDead) return;
         if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemyatk");
