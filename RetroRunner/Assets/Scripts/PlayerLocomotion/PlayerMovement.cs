@@ -14,9 +14,13 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 movementInputDirection;
     private Vector3 _smoothMoveDirection;
     private Vector3 _smoothMoveVelocity;
-    
+
+    public float maxAllowedX = -5f;
+
     private float _currentSpeed;
     private float _currentMovementSmoothnes;
+
+    private bool isLadder;
     
     [Header("Variables")]
     [Range(0.01f, 0.5f)] 
@@ -35,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponentInChildren<Animator>();
+        isLadder = false;
     }
 
     void Update()
@@ -43,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Jump();
         Gravity();
+        
         Vector3 moveThisDirection = new Vector3(_smoothMoveDirection.x, movementInputDirection.y, 0);
 
         if (movementInputDirection.x > 0)
@@ -54,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
             playerCharacter.transform.rotation = Quaternion.Euler(0,180,0);
         }
         _characterController.Move(moveThisDirection * Time.deltaTime);
+        WallBlocking();
         SetAni();
     }
     
@@ -90,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetKeyDown(jumpKey))
             {
+                _animator.CrossFade("Ani_Character_Jump", 0.2f);
                 movementInputDirection.y = jumpforce;
             }
             else
@@ -102,13 +110,26 @@ public class PlayerMovement : MonoBehaviour
     private void Gravity()
     {
         //Gravity
-        movementInputDirection.y = movementInputDirection.y + (Physics.gravity.y * gravity * Time.deltaTime);
+        movementInputDirection.y = movementInputDirection.y + (Physics.gravity.y * gravity * Time.deltaTime * (isLadder ? 0 : 1));
+    }
+
+    private void WallBlocking()
+    {
+        Vector3 currentPosition = transform.position;
+
+        if (currentPosition.x < maxAllowedX)
+        {
+            Debug.Log("Wall");
+            currentPosition.x = maxAllowedX;
+            transform.position = currentPosition;
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Ladder"))
         {
+            isLadder = true;
             _animator.SetBool("isLadder", true);
             movementInputDirection.y = Input.GetAxisRaw("Vertical") * 3;
         }
@@ -118,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Ladder"))
         {
+            isLadder = false;
             _animator.SetBool("isLadder", false);
         }
     }

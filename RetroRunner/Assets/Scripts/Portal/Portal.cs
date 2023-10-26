@@ -20,13 +20,16 @@ public class Portal : MonoBehaviour
         puzzle.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if(_isClear) return;
         if (other.CompareTag("Player"))
         {
-            SetPuzzleCam();
-            puzzle.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                SetPuzzleCam();
+                puzzle.SetActive(true);
+            }
         }
     }
 

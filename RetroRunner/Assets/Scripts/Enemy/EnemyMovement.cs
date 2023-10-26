@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    [SerializeField] Animator animator;
     private CharacterController _characterController;
     private Health _health;
-    
+    [SerializeField] private GameObject enemySprite;
+
     [SerializeField] private Vector3 _moveDirection;
 
-    [SerializeField] private float moveDir = -1;
+    private bool _isRight;
 
     [SerializeField] private float currentSpeed = 3f;
     
@@ -24,6 +26,8 @@ public class EnemyMovement : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _health = GetComponent<Health>();
+        _isRight = true;
+        StartCoroutine(EnemyTurnManager());
     }
 
     void Update()
@@ -40,11 +44,11 @@ public class EnemyMovement : MonoBehaviour
         if (_health.isDead)
         {
             _moveDirection = Vector3.zero;
+            animator.enabled = false;
             return;
         }
-        _moveDirection = (transform.right * moveDir);
-        _moveDirection = _moveDirection.normalized * currentSpeed;
-        StartCoroutine(EnemyTurn());
+        _moveDirection = transform.right * currentSpeed * -1;
+        animator.SetBool("isWalk",true);
     }
 
     private void Gravity()
@@ -53,14 +57,27 @@ public class EnemyMovement : MonoBehaviour
         _moveDirection.y = _moveDirection.y + (Physics.gravity.y * gravity * Time.deltaTime);
     }
     
-    IEnumerator EnemyTurn()
+    IEnumerator EnemyTurnManager()
     {
-        yield return new WaitForSeconds(moveRange);
+        while (true)
+        {
+            yield return new WaitForSeconds(moveRange);
 
-        if(moveDir > 0)
-            moveDir = -1;
-        if (moveDir < 0)
-            moveDir = 1;
+            EnemyTurn();
+        }
+    }
 
+    private void EnemyTurn()
+    {
+        if (_isRight)
+        {
+            _isRight = false;
+            this.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else
+        {
+            _isRight = true;
+            this.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
 }

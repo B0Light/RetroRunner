@@ -65,6 +65,10 @@ public class Health : MonoBehaviour
             {
                 animator.CrossFade("Ani_Character_Hit", 0.2f);
             }
+            else if (this.gameObject.CompareTag("Player"))
+            {
+                animator.CrossFade("Ani_Enemy_Hit", 0.2f);
+            }
         }
         foreach (SpriteRenderer mesh in meshs)
             mesh.material.color = Color.red;
